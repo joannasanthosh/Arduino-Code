@@ -35,10 +35,15 @@ void setup(){ // code that only runs once
 void receiveDataFromPi() {
   if (Serial.available() > 0) {
     msgPi = Serial.readStringUntil('\n');  // Read the incoming message
-    msgPi = msgPi + " " + String(tag);     // Add a tag for identification
+    msg = msgPi + " " + String(tag);     // Add a tag for identification
     tag++;
     Serial.println("Received: " + msgPi); // Echo the received message back
   }
+}
+
+// Function to send soil moisture data to the Raspberry Pi
+void sendDataToPi(String moisture) {
+  Serial.println(moisture); 
 }
 
 void loop(){ // code that loops forever
@@ -78,7 +83,11 @@ void loop(){ // code that loops forever
     digitalWrite(LED3,LOW);
     digitalWrite(pumppin,LOW);
   }
-  
+
+  // Send the soil sensor data to the Raspberry Pi
+  // should be String value 
+  sendDataToPi(soil_moisture);
+
   // wait before taking next reading
   delay(delayTime);
   
